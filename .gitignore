@@ -1,0 +1,20 @@
+.build/
+.swiftpm/
+TeamsAlert.app/
+TeamsAlert.iconset/
+TeamsAlert.icns
+*.xcodeproj/
+*.xcworkspace/
+DerivedData/
+.DS_Store
+config.json
+
+# Legacy Python files
+manage.py
+requirements.txt
+teams_alert.py
+.token_cache.json
+__pycache__/
+*.pyc
+.env
+venv/
