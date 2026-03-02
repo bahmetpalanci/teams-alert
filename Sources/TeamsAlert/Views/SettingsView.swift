@@ -24,12 +24,61 @@ struct SettingsView: View {
                             .labelsHidden()
 
                             Button {
-                                SoundPlayer.play(name: config.defaultSoundName)
+                                SoundPlayer.playRepeated(
+                                    name: config.defaultSoundName,
+                                    count: config.repeatCount,
+                                    interval: config.repeatInterval,
+                                    afterDelay: 0
+                                )
                             } label: {
                                 Image(systemName: "speaker.wave.2")
                             }
                         }
                     }
+
+                    LabeledContent("Delay") {
+                        HStack {
+                            Slider(value: $config.alertDelay, in: 1...10, step: 0.5)
+                                .frame(width: 140)
+                            Text("\(config.alertDelay, specifier: "%.1f")s")
+                                .monospacedDigit()
+                                .frame(width: 35, alignment: .trailing)
+                        }
+                    }
+
+                    LabeledContent("Repeat") {
+                        HStack {
+                            Picker("", selection: $config.repeatCount) {
+                                ForEach(1...5, id: \.self) { n in
+                                    Text("\(n)x").tag(n)
+                                }
+                            }
+                            .frame(width: 60)
+                            .labelsHidden()
+
+                            Text("every")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+
+                            Picker("", selection: Binding(
+                                get: { config.repeatInterval },
+                                set: { config.repeatInterval = $0 }
+                            )) {
+                                Text("0.5s").tag(0.5)
+                                Text("1s").tag(1.0)
+                                Text("1.5s").tag(1.5)
+                                Text("2s").tag(2.0)
+                            }
+                            .frame(width: 65)
+                            .labelsHidden()
+                        }
+                    }
+
+                    Text("Sound plays \(config.alertDelay, specifier: "%.1f")s after Teams notification, repeats \(config.repeatCount)x.")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+
+                    Divider()
 
                     Toggle("Alert on all Teams notifications", isOn: $config.alertOnAllIfNoMatch)
                         .font(.caption)

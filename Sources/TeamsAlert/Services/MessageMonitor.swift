@@ -227,7 +227,12 @@ final class MessageMonitor {
         alerts.insert(alert, at: 0)
         if alerts.count > 50 { alerts.removeLast() }
 
-        SoundPlayer.play(name: soundName ?? config.defaultSoundName)
+        SoundPlayer.playRepeated(
+            name: soundName ?? config.defaultSoundName,
+            count: config.repeatCount,
+            interval: config.repeatInterval,
+            afterDelay: config.alertDelay
+        )
     }
 
     private func matches(sender: String, entry: WatchEntry) -> Bool {
